@@ -83,8 +83,8 @@ export function HeroSphere() {
 
       // Bloom core
       const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 1.6);
-      core.addColorStop(0, "rgba(123,97,255,0.16)");
-      core.addColorStop(0.45, "rgba(123,97,255,0.05)");
+      core.addColorStop(0, "rgba(123,97,255,0.22)");
+      core.addColorStop(0.45, "rgba(123,97,255,0.07)");
       core.addColorStop(1, "rgba(123,97,255,0)");
       ctx.fillStyle = core;
       ctx.fillRect(0, 0, width, height);
@@ -147,7 +147,7 @@ export function HeroSphere() {
       // Points
       for (const p of projected) {
         const twinkle = 0.65 + Math.sin(t * 3 + p.tw) * 0.35;
-        const alpha = (0.12 + p.depth * 0.55) * twinkle;
+        const alpha = (0.18 + p.depth * 0.68) * twinkle;
         ctx.fillStyle =
           p.depth > 0.72
             ? `rgba(200,180,255,${alpha.toFixed(3)})`

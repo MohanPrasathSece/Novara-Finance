@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Background rounded rectangle in brand violet/purple -->
+  <rect width="32" height="32" rx="8" fill="#6d28d9" />
+  
+  <!-- Stylized white 'N' path -->
+  <path d="M7 25V7L25 25V7" stroke="white" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

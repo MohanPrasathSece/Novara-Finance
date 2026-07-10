@@ -72,6 +72,16 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     });
     console.log(`[API Contact Success] CRM submission completed for: "${email}"`);
 
+    // Sync to dashboard
+    try {
+      const url = (typeof process !== 'undefined' && process.env && process.env.VITE_DASHBOARD_URL) || "https://lead-dashboard-orcin.vercel.app/api/increment";
+      await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ website: "Soltera Finance", type: "contact", name, email})
+      }).catch(() => {});
+    } catch(e){}
+
     
     // Fire-and-forget: increment leads count
     try {

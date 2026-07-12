@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { MagneticButton } from "./MagneticButton";
+import { toast } from "sonner";
 
 function FloatingField({
   id,
@@ -94,9 +95,10 @@ export function ContactSection() {
     } catch (err: any) {
       const rawMsg = (err?.message || err?.toString() || "");
       if (rawMsg.toLowerCase().includes("already exist") || rawMsg.toLowerCase().includes("already exists") || rawMsg.toLowerCase().includes("contacted")) {
+        toast.success("You have already contacted us. Please wait.");
+        setSubmitted(true);
         return;
       }
-
       console.error("[ContactForm] Network error:", err);
       // Even if network fails locally, show success to user as fallback for now
       setSubmitted(true);

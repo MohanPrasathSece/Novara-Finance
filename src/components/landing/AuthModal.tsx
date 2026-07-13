@@ -17,6 +17,7 @@ export function AuthModal() {
   
   // UI states
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const handleOpen = (e: Event) => {
@@ -39,12 +40,15 @@ export function AuthModal() {
     setPhone("");
     setCountryCode("CH");
     setLoading(false);
+    setErrorMsg("");
   };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg("");
     if (!email.trim()) {
       toast.error("Please fill in your email address.");
+      setErrorMsg("Please fill in your email address.");
       return;
     }
 
@@ -63,7 +67,9 @@ export function AuthModal() {
       window.location.href = "/dashboard";
     } catch (err: any) {
       console.error("[Login] Error:", err);
-      toast.error(err.message || "No account found with this email. Please sign up first.");
+      const msg = err.message || "No account found with this email. Please sign up first.";
+      setErrorMsg(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -71,9 +77,11 @@ export function AuthModal() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg("");
     
     if (!name.trim() || !email.trim()) {
       toast.error("Please fill in all required fields.");
+      setErrorMsg("Please fill in all required fields.");
       return;
     }
 
@@ -83,6 +91,7 @@ export function AuthModal() {
 
     if (cleanPhone && !selectedCountry.regex.test(cleanPhone)) {
       toast.error(`Please enter a valid phone number for ${selectedCountry.name}. Format example: ${selectedCountry.placeholder}`);
+      setErrorMsg(`Please enter a valid phone number for ${selectedCountry.name}. Format example: ${selectedCountry.placeholder}`);
       return;
     }
 
@@ -100,6 +109,7 @@ export function AuthModal() {
       if (!res.ok) {
         if (res.status === 409 || (data.error && (data.error.toLowerCase().includes("already") || data.error.toLowerCase().includes("duplicate")))) {
           toast.info("You have already contacted us. A member of our advisory team will reach out to you shortly.");
+          setErrorMsg("You have already contacted us. A member of our advisory team will reach out to you shortly.");
           handleClose();
           return;
         }
@@ -112,11 +122,14 @@ export function AuthModal() {
       window.location.href = "/dashboard";
     } catch (err: any) {
       console.error("[Signup] Error:", err);
-      toast.error(err.message || "An error occurred during registration. Please try again.");
+      const msg = err.message || "An error occurred during registration. Please try again.";
+      setErrorMsg(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <AnimatePresence>
@@ -160,7 +173,7 @@ export function AuthModal() {
             {/* Tab Controls */}
             <div className="mb-6 grid grid-cols-2 rounded-xl bg-secondary/40 p-1 border border-border">
               <button
-                onClick={() => setActiveTab("signup")}
+                onClick={() => { setActiveTab("signup"); setErrorMsg(""); }}
                 className={`rounded-lg py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
                   activeTab === "signup"
                     ? "bg-primary text-primary-foreground shadow-[0_0_12px_rgba(123,97,255,0.25)]"
@@ -170,7 +183,7 @@ export function AuthModal() {
                 Create Account
               </button>
               <button
-                onClick={() => setActiveTab("login")}
+                onClick={() => { setActiveTab("login"); setErrorMsg(""); }}
                 className={`rounded-lg py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
                   activeTab === "login"
                     ? "bg-primary text-primary-foreground shadow-[0_0_12px_rgba(123,97,255,0.25)]"
@@ -180,6 +193,17 @@ export function AuthModal() {
                 Log In
               </button>
             </div>
+
+            {/* Error Message Display */}
+            {errorMsg && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 rounded-xl border border-red-500/20 bg-red-500/10 p-3.5 text-xs text-red-400 font-semibold"
+              >
+                {errorMsg}
+              </motion.div>
+            )}
 
             {/* Form render based on active tab */}
             <AnimatePresence mode="wait">

@@ -256,3 +256,23 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Custom global styling for select elements */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.6)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  background-color: var(--secondary);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+select:focus {
+  border-color: oklch(0.76 0.15 85); /* Amber focus accent */
+  box-shadow: 0 0 0 3px oklch(0.76 0.15 85 / 15%);
+}

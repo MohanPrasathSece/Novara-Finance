@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { MagneticButton } from "./MagneticButton";
 import { toast } from "sonner";
+import { COUNTRY_PHONE_PATTERNS } from "@/lib/constants";
 
 function FloatingField({
   id,
@@ -64,18 +65,78 @@ function FloatingField({
   );
 }
 
+function PhoneField({
+  countryCode,
+  setCountryCode,
+}: {
+  countryCode: string;
+  setCountryCode: (val: string) => void;
+}) {
+  const [focused, setFocused] = useState(false);
+  const [value, setValue] = useState("");
+  const raised = focused || value.length > 0;
+
+  const country = COUNTRY_PHONE_PATTERNS[countryCode] || COUNTRY_PHONE_PATTERNS.CH;
+
+  return (
+    <div className="relative flex gap-2.5">
+      <div className="w-1/3 relative">
+        <select
+          name="countryCode"
+          value={countryCode}
+          onChange={(e) => setCountryCode(e.target.value)}
+          className="w-full h-full rounded-xl border border-border bg-secondary/40 px-3.5 pt-5 pb-1 text-[14px] text-foreground outline-none transition-all duration-300 focus:border-primary/50 focus:bg-secondary/70 focus:shadow-[0_0_0_3px_oklch(0.58_0.21_285/12%)] cursor-pointer"
+        >
+          {Object.values(COUNTRY_PHONE_PATTERNS).map((c) => (
+            <option key={c.code} value={c.code} className="bg-surface text-foreground">
+              {c.code} (+{c.dialCode})
+            </option>
+          ))}
+        </select>
+        <span className="absolute top-1.5 left-3.5 text-[9px] font-semibold text-primary-glow tracking-wider uppercase pointer-events-none">Code</span>
+      </div>
+      <div className="w-2/3 relative">
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          className="peer w-full rounded-xl border border-border bg-secondary/40 px-4 pt-6 pb-2 text-[15px] text-foreground outline-none transition-all duration-300 focus:border-primary/50 focus:bg-secondary/70 focus:shadow-[0_0_0_3px_oklch(0.58_0.21_285/12%)]"
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={focused ? country.placeholder : ""}
+        />
+        <label
+          htmlFor="phone"
+          className={`pointer-events-none absolute left-4 transition-all duration-300 ${
+            raised
+              ? "top-2 text-[11px] font-medium text-primary-glow"
+              : "top-4 text-[15px] text-muted-foreground"
+          }`}
+        >
+          Phone Number
+        </label>
+      </div>
+    </div>
+  );
+}
+
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
+  const [countryCode, setCountryCode] = useState("CH");
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const data = Object.fromEntries(formData.entries());
     
-    // Basic mobile validation (must contain at least 7 digits, optional + prefix)
+    // Country code phone validation logic
     const phoneVal = (data.phone as string) || "";
-    if (phoneVal && !/^\+?[0-9\s-]{7,20}$/.test(phoneVal)) {
-      alert("Please enter a valid mobile number.");
+    const selectedCountry = COUNTRY_PHONE_PATTERNS[countryCode] || COUNTRY_PHONE_PATTERNS.CH;
+    const cleanPhone = phoneVal.replace(/[^0-9+]/g, '');
+
+    if (cleanPhone && !selectedCountry.regex.test(cleanPhone)) {
+      toast.error(`Please enter a valid phone number for ${selectedCountry.name}. Format example: ${selectedCountry.placeholder}`);
       return;
     }
 
@@ -85,23 +146,28 @@ export function ContactSection() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          countryCode
+        }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit");
+        const errorData = await response.json().catch(() => ({}));
+        const errMsg = errorData.error || errorData.details || "";
+        
+        if (response.status === 409 || errMsg.toLowerCase().includes("already") || errMsg.toLowerCase().includes("duplicate")) {
+          toast.info("You have already contacted us. A member of our advisory team will reach out to you shortly.");
+          setSubmitted(true);
+          return;
+        }
+        
+        throw new Error(errMsg || "An error occurred while submitting your enquiry.");
       }
       setSubmitted(true);
     } catch (err: any) {
-      const rawMsg = (err?.message || err?.toString() || "");
-      if (rawMsg.toLowerCase().includes("already exist") || rawMsg.toLowerCase().includes("already exists") || rawMsg.toLowerCase().includes("contacted")) {
-        toast.success("You have already contacted us. Please wait.");
-        setSubmitted(true);
-        return;
-      }
-      console.error("[ContactForm] Network error:", err);
-      // Even if network fails locally, show success to user as fallback for now
-      setSubmitted(true);
+      console.error("[ContactForm] Error:", err);
+      toast.error(err.message || "An error occurred while submitting your enquiry. Please verify your details and try again.");
     }
   };
 
@@ -171,14 +237,28 @@ export function ContactSection() {
                   transition={{ duration: 0.4 }}
                   className="space-y-5"
                 >
+                  {/* Urgency Notice & Live Ticker */}
+                  <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 mb-4">
+                    <div className="flex items-center justify-between gap-2 text-xs font-semibold text-primary-glow">
+                      <span className="flex items-center gap-1.5">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary-glow animate-pulse-glow" />
+                        Allocation Lock-In Active
+                      </span>
+                      <span className="font-mono text-[10px] bg-secondary px-2 py-0.5 rounded text-muted-foreground uppercase">
+                        First-Come Priority
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
+                      Complete your enquiry to instantly reserve your institutional intake position. Submissions lock in current yield tiers for 24 hours.
+                    </p>
+                    <RecentActivityTicker />
+                  </div>
+
                   <div className="grid gap-5 sm:grid-cols-2">
                     <FloatingField id="name" label="Name" required />
                     <FloatingField id="email" label="Email" type="email" required />
                   </div>
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <FloatingField id="budget" label="Investment Budget" />
-                    <FloatingField id="phone" label="Phone" type="tel" />
-                  </div>
+                  <PhoneField countryCode={countryCode} setCountryCode={setCountryCode} />
                   <FloatingField id="message" label="Message" textarea />
                   <div className="pt-2">
                     <MagneticButton type="submit" variant="primary" className="w-full sm:w-auto">
@@ -193,5 +273,39 @@ export function ContactSection() {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+import { useEffect } from "react";
+
+function RecentActivityTicker() {
+  const [index, setIndex] = useState(0);
+  const activities = [
+    { location: "Zurich, Switzerland", amount: "CHF 150k", time: "2 minutes ago" },
+    { location: "London, UK", amount: "GBP 300k", time: "5 minutes ago" },
+    { location: "Geneva, Switzerland", amount: "CHF 500k", time: "11 minutes ago" },
+    { location: "Frankfurt, Germany", amount: "EUR 250k", time: "17 minutes ago" },
+    { location: "Lugano, Switzerland", amount: "CHF 100k", time: "24 minutes ago" }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex(prev => (prev + 1) % activities.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [activities.length]);
+
+  const act = activities[index];
+
+  return (
+    <div className="mt-3 pt-3 border-t border-primary/10 flex items-center justify-between text-[11px] text-muted-foreground min-h-[20px] transition-all duration-500">
+      <div className="flex items-center gap-1.5">
+        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+        <span>Recent intake secured:</span>
+      </div>
+      <span className="font-semibold text-foreground">
+        {act.location} &bull; {act.amount} &bull; <span className="text-primary-glow font-mono font-normal">{act.time}</span>
+      </span>
+    </div>
   );
 }

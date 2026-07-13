@@ -2,13 +2,55 @@ import type { IncomingMessage, ServerResponse } from "http";
 import { submitToCRM } from "./_lib/crm.js";
 import { getUsers, saveUsers, User } from "./_lib/blobDb.js";
 
+const DIAL_CODES: Record<string, string> = {
+  CH: "41",
+  FR: "33",
+  BE: "32",
+  CA: "1",
+  US: "1",
+  GB: "44",
+  DE: "49",
+  ES: "34",
+  IT: "39",
+  NL: "31",
+  SE: "46",
+  AU: "61",
+  IN: "91",
+  AE: "971",
+  SG: "65",
+  ZA: "27",
+  BR: "55",
+  MX: "52",
+  JP: "81",
+  CY: "357"
+};
+
+function formatPhoneForSignup(phoneInput: string, countryCode: string = "CH"): string {
+  let phone = (phoneInput || "").replace(/[^\d]/g, "").trim();
+  const upperCountry = countryCode.toUpperCase();
+  const code = DIAL_CODES[upperCountry] || "41";
+
+  const doublePrefix = "00" + code;
+  if (phone.startsWith(doublePrefix)) {
+    phone = phone.slice(doublePrefix.length);
+  } else if (phone.startsWith(code)) {
+    phone = phone.slice(code.length);
+  }
+
+  if (phone.startsWith("0")) {
+    phone = phone.slice(1);
+  }
+
+  return "+" + code + phone;
+}
+
 async function parseJsonBody(req: IncomingMessage & { body?: any }): Promise<Record<string, any>> {
   try {
     if (req.body !== undefined && req.body !== null) {
       return typeof req.body === "string" ? JSON.parse(req.body) : req.body;
     }
   } catch {
-    // fall through to stream reading
+    // fall through
   }
   return new Promise((resolve) => {
     let body = "";
@@ -25,7 +67,12 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "OPTIONS") { res.statusCode = 200; res.end(); return; }
+  if (req.method === "OPTIONS") { 
+    res.statusCode = 200; 
+    res.end(); 
+    return; 
+  }
+
   if (req.method !== "POST") {
     res.statusCode = 405;
     res.setHeader("Content-Type", "application/json");
@@ -36,22 +83,15 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   try {
     const body = await parseJsonBody(req);
     const { name, email, phone, countryCode } = body;
+    const selectedCountry = countryCode || "CH";
 
-    console.log(`[API Signup Request] Name: "${name}", Email: "${email}", Phone: "${phone || "(none)"}", CountryCode: "${countryCode || "CH"}"`);
+    console.log(`[API Signup] Request: Name="${name}", Email="${email}", Phone="${phone}", CountryCode="${selectedCountry}"`);
 
-    // Validate required fields
+    // Validation
     if (!email || !email.trim()) {
       res.statusCode = 400;
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify({ error: "Email is required" }));
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.trim())) {
-      res.statusCode = 400;
-      res.setHeader("Content-Type", "application/json");
-      res.end(JSON.stringify({ error: "Please enter a valid email address" }));
       return;
     }
 
@@ -62,35 +102,36 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
       return;
     }
 
-    // Submit to CRM (non-blocking if lead already exists)
-    console.log("[API Signup] Submitting to CRM...");
+    const cleanPhone = phone ? formatPhoneForSignup(phone, selectedCountry) : "";
+
+    // CRM Submission
     try {
       await submitToCRM({
         name: name.trim(),
         email: email.trim(),
-        phone: phone || "",
-        description: "Revelle Partners",
+        phone: cleanPhone,
+        description: "Novara",
         outlineYourCase: "Signup Lead",
-        countryCode: countryCode || "CH",
+        countryCode: selectedCountry,
       });
-      console.log("[API Signup] CRM submission succeeded.");
+      console.log("[API Signup] CRM lead created/updated successfully.");
     } catch (crmError) {
       const errMsg = (crmError as Error).message || "";
-      if (errMsg.toLowerCase().includes("already exist")) {
-        console.warn("[API Signup Warning] CRM lead already exists, continuing:", crmError);
-      } else {
-        console.error("[API Signup Error] CRM Submission failed:", crmError);
-        // Don't block signup if CRM fails — just log
+      if (errMsg.toLowerCase().includes("already exist") || errMsg.toLowerCase().includes("already exists")) {
+        console.warn("[API Signup] CRM duplicate detected, raising conflict.");
+        res.statusCode = 409;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "You have already contacted us. A member of our team will get in touch with you shortly.", code: "ALREADY_EXISTS" }));
+        return;
       }
+      console.error("[API Signup] CRM submission failed:", crmError);
     }
 
-    // Check duplicate by EMAIL ONLY
-    console.log("[API Signup] Fetching current user list...");
+    // Save to Local Mock database
     const users = await getUsers();
     const existingIndex = users.findIndex((u) => u.email.toLowerCase() === email.trim().toLowerCase());
 
     if (existingIndex >= 0) {
-      console.log(`[API Signup] Account already exists for: "${email}"`);
       res.statusCode = 409;
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify({ error: "An account with this email already exists. Please sign in instead.", code: "ALREADY_EXISTS" }));
@@ -100,52 +141,45 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     const updatedUser: User = {
       email: email.trim().toLowerCase(),
       name: name.trim(),
-      phone: phone ? phone.trim() : "",
+      phone: cleanPhone,
       createdAt: new Date().toISOString(),
     };
 
     users.push(updatedUser);
     await saveUsers(users);
-    console.log(`[API Signup Success] Registered: "${email}"`);
 
     // Sync to dashboard
     try {
-      const url = (typeof process !== 'undefined' && process.env && process.env.VITE_DASHBOARD_URL) || "https://lead-dashboard-orcin.vercel.app/api/increment";
-      await fetch(url, {
+      const dashboardUrl = process.env.VITE_DASHBOARD_URL || "https://lead-dashboard-orcin.vercel.app/api/increment";
+      await fetch(dashboardUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ website: "Revelle Partners", type: "signup", name: name, email: email})
-      }).catch(() => {});
-    } catch(e){}
-    // Sync to dashboard
-    try {
-      const url = (typeof process !== 'undefined' && process.env && process.env.VITE_DASHBOARD_URL) || "https://lead-dashboard-orcin.vercel.app/api/increment";
-      await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ website: "Revelle Partners", type: "signup", name: name, email: email})
-      }).catch(() => {});
-    } catch(e){}
+        body: JSON.stringify({
+          website: "Novara",
+          type: "signup",
+          name: name.trim(),
+          email: email.trim()
+        })
+      });
+      console.log("[API Signup] Dashboard count incremented.");
+    } catch (dbError) {
+      console.warn("[API Signup] Dashboard sync failed:", dbError);
+    }
 
-    // Fire-and-forget: increment leads count
+    // Leads count sync
     try {
       const host = req.headers.host || "localhost:3000";
       const protocol = host.startsWith("localhost") ? "http" : "https";
-      fetch(`${protocol}://${host}/api/leads-count`, { method: "POST" }).catch((err) =>
-        console.warn("[leads-count] Failed to increment:", err)
-      );
-    } catch (e) {
-      console.warn("[leads-count] Error triggering increment:", e);
-    }
+      fetch(`${protocol}://${host}/api/leads-count`, { method: "POST" }).catch(() => {});
+    } catch {}
 
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify({ success: true, user: updatedUser }));
-  } catch (error: unknown) {
-    const err = error as Error;
-    console.error("[API Signup Error] Critical failure:", err);
+  } catch (error: any) {
+    console.error("[API Signup] Critical error:", error);
     res.statusCode = 500;
     res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ error: err.message || "Internal server error" }));
+    res.end(JSON.stringify({ error: error.message || "Internal server error" }));
   }
 }

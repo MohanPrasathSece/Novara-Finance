@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 const links = [
   { label: "Home", href: "#home" },
   { label: "Solutions", href: "#solutions" },
-  { label: "Security", href: "#platform" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -24,7 +23,7 @@ export function Navbar() {
       initial={{ y: -32, opacity: 0, filter: "blur(8px)" }}
       animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
       transition={{ duration: 0.9, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className="fixed inset-x-0 top-4 z-50 flex justify-center px-4"
+      className="fixed inset-x-0 top-14 z-50 flex justify-center px-4"
     >
       <nav
         className={cn(
@@ -55,12 +54,20 @@ export function Navbar() {
           ))}
         </ul>
 
-        <a
-          href="#contact"
-          className="rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground shadow-[0_0_24px_-6px_oklch(0.58_0.21_285/70%)] transition-all duration-300 hover:shadow-[0_0_36px_-6px_oklch(0.58_0.21_285)] hover:brightness-110"
-        >
-          Start Investing
-        </a>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: { tab: "login" } }))}
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300 cursor-pointer"
+          >
+            Log In
+          </button>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: { tab: "signup" } }))}
+            className="rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground shadow-[0_0_24px_-6px_oklch(0.58_0.21_285/70%)] transition-all duration-300 hover:shadow-[0_0_36px_-6px_oklch(0.58_0.21_285)] hover:brightness-110 cursor-pointer"
+          >
+            Start Investing
+          </button>
+        </div>
       </nav>
     </motion.header>
   );

@@ -2,45 +2,48 @@ import process from "process";
 
 const DIAL_CODES: Record<string, string> = {
   CH: "41",
+  FR: "33",
+  BE: "32",
+  CA: "1",
   US: "1",
   GB: "44",
   DE: "49",
-  IN: "91",
-  FR: "33",
-  BE: "32",
-  IT: "39",
   ES: "34",
+  IT: "39",
   NL: "31",
-  AT: "43",
-  SE: "46"
+  SE: "46",
+  AU: "61",
+  IN: "91",
+  AE: "971",
+  SG: "65",
+  ZA: "27",
+  BR: "55",
+  MX: "52",
+  JP: "81",
+  CY: "357"
 };
 
 export function formatPhoneForCRM(phoneInput: string, countryCode: string = "CH"): string {
-  let phone = (phoneInput || "").replace(/[^\d+]/g, "").trim();
+  // Strip non-digits
+  let phone = (phoneInput || "").replace(/[^\d]/g, "").trim();
   const upperCountry = countryCode.toUpperCase();
   const code = DIAL_CODES[upperCountry] || "41";
 
-  if (phone) {
-    if (phone.startsWith("+")) {
-      phone = "00" + phone.slice(1);
-    }
-
-    if (phone.startsWith(code) && !phone.startsWith("00" + code)) {
-      phone = "00" + phone;
-    }
-
-    if (phone.startsWith("0") && !phone.startsWith("00")) {
-      phone = "00" + code + phone.slice(1);
-    }
-
-    if (!phone.startsWith("00")) {
-      phone = "00" + code + phone;
-    }
-  } else {
-    phone = "0000000000";
+  // Strip leading 00 + country code or leading country code if entered
+  const doublePrefix = "00" + code;
+  if (phone.startsWith(doublePrefix)) {
+    phone = phone.slice(doublePrefix.length);
+  } else if (phone.startsWith(code)) {
+    phone = phone.slice(code.length);
   }
 
-  return phone;
+  // Strip single leading zero (common in local dialing formats, e.g., 079 -> 79)
+  if (phone.startsWith("0")) {
+    phone = phone.slice(1);
+  }
+
+  // Prepend correct prefix
+  return "00" + code + phone;
 }
 
 export function parseName(fullName: string): { first_name: string; last_name: string } {
@@ -67,13 +70,10 @@ export async function submitToCRM(leadData: CRMLeadData) {
   const { first_name, last_name } = parseName(leadData.name);
   const countryCode = leadData.countryCode || "CH";
   
-  let finalPhone = (leadData.number || leadData.phone || "").replace(/[^0-9+]/g, '');
-  if (finalPhone && finalPhone.startsWith('+')) {
-      finalPhone = '00' + finalPhone.slice(1);
-  } else {
-      finalPhone = formatPhoneForCRM(finalPhone, countryCode);
-  }
-  let countryName = leadData.countryCode ? leadData.countryCode.toLowerCase() : "ch";
+  // Format phone number
+  const rawPhone = leadData.number || leadData.phone || "";
+  const finalPhone = formatPhoneForCRM(rawPhone, countryCode);
+  const countryName = countryCode.toLowerCase();
 
   const payload = {
     first_name,
@@ -88,23 +88,37 @@ export async function submitToCRM(leadData: CRMLeadData) {
   // Bypass SSL certificate errors for this specific CRM API (UNABLE_TO_VERIFY_LEAF_SIGNATURE)
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+  console.log("[CRM Submit] Target:", crmEndpoint);
+  console.log("[CRM Submit] Headers & Token configured");
+  console.log("[CRM Submit] Payload:", JSON.stringify(payload));
+
   const response = await fetch(crmEndpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${crmToken}`,
-      "x-token": crmToken,
+      "Token": crmToken,
+      "Authorization": `Bearer ${crmToken}`,
+      "X-Affiliate-Token": crmToken,
+      "x-token": crmToken
     },
     body: JSON.stringify(payload),
   });
 
-  if (!response.ok) {
-    const errorText = await response.clone().text().catch(()=>"");
-    if (errorText.toLowerCase().includes("already exist") || errorText.toLowerCase().includes("already exists")) {
-        throw new Error("Failed to create account: Account already exist!");
-    }
+  const responseText = await response.clone().text().catch(() => "");
+  console.log(`[CRM Response] Status: ${response.status}. Body: ${responseText}`);
 
-    throw new Error(`CRM API request failed: ${response.status} - ${errorText}`);
+  const responseLower = responseText.toLowerCase();
+  const isDuplicateError = responseLower.includes("already") || 
+                           responseLower.includes("exist") || 
+                           (responseLower.includes("duplicate") && !responseText.includes('"duplicate":false'));
+
+  if (isDuplicateError) {
+    console.warn("[CRM Submit] Lead already exists (detected duplicate pattern)");
+    throw new Error("Account already exists");
+  }
+
+  if (!response.ok) {
+    throw new Error(`CRM API request failed: ${response.status} - ${responseText}`);
   }
 
   return await response.json();

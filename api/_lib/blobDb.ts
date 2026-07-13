@@ -8,8 +8,16 @@ export interface User {
 }
 
 function getBlobCredentials() {
-  const token = process.env.BLOB_READ_WRITE_TOKEN_NEW_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN;
-  const storeId = process.env.BLOB_READ_WRITE_TOKEN_NEW_STORE_ID || process.env.BLOB_STORE_ID;
+  let token = process.env.BLOB_READ_WRITE_TOKEN_NEW_READ_WRITE_TOKEN || process.env.BLOB_READ_WRITE_TOKEN || "";
+  let storeId = process.env.BLOB_READ_WRITE_TOKEN_NEW_STORE_ID || process.env.BLOB_STORE_ID || "";
+
+  if (token.startsWith('"') && token.endsWith('"')) {
+    token = token.slice(1, -1);
+  }
+  if (storeId.startsWith('"') && storeId.endsWith('"')) {
+    storeId = storeId.slice(1, -1);
+  }
+
   return { token, storeId };
 }
 

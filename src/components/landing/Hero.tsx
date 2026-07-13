@@ -111,7 +111,7 @@ function HeroIntakeStatus() {
     setHasMounted(true);
     // Sync with the same localStorage deadline
     const getDeadline = () => {
-      const stored = localStorage.getItem("novara_intake_deadline_v2");
+      const stored = localStorage.getItem("solara_intake_deadline_v2");
       return stored ? parseInt(stored, 10) : (Date.now() + (1 * 60 * 60 * 1000 + 23 * 1000));
     };
 

@@ -95,7 +95,7 @@ export function PlatformSection() {
                     <span key={i} className="h-2.5 w-2.5 rounded-full bg-secondary" />
                   ))}
                 </div>
-                <p className="text-[13px] text-muted-foreground">novara.finance / analytics</p>
+                <p className="text-[13px] text-muted-foreground">solaraassets.com / analytics</p>
                 <span className="rounded-full bg-primary/10 px-3 py-1 text-[12px] font-medium text-primary-glow">
                   Live
                 </span>
@@ -167,7 +167,7 @@ export function PlatformSection() {
                         className="rounded-xl border border-border bg-secondary/50 p-3.5 text-[13px] leading-relaxed text-muted-foreground"
                       >
                         <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-medium text-primary-glow">
-                          <Bot className="h-3 w-3" aria-hidden /> NOVARA AI
+                          <Bot className="h-3 w-3" aria-hidden /> SOLARA AI
                         </span>
                         {text}
                       </motion.div>

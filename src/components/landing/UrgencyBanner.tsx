@@ -8,20 +8,20 @@ export function UrgencyBanner() {
   useEffect(() => {
     // 1 hour 23 seconds countdown stored in localStorage
     const getDeadline = () => {
-      const stored = localStorage.getItem("novara_intake_deadline_v2");
+      const stored = localStorage.getItem("solara_intake_deadline_v2");
       const duration = 1 * 60 * 60 * 1000 + 23 * 1000; // 01:00:23
       if (stored) {
         const time = parseInt(stored, 10);
         // If the stored deadline is expired by more than 10 mins, reset it
         if (Date.now() - time > 10 * 60 * 1000) {
           const newDeadline = Date.now() + duration;
-          localStorage.setItem("novara_intake_deadline_v2", newDeadline.toString());
+          localStorage.setItem("solara_intake_deadline_v2", newDeadline.toString());
           return newDeadline;
         }
         return time;
       } else {
         const newDeadline = Date.now() + duration;
-        localStorage.setItem("novara_intake_deadline_v2", newDeadline.toString());
+        localStorage.setItem("solara_intake_deadline_v2", newDeadline.toString());
         return newDeadline;
       }
     };

@@ -7,14 +7,14 @@ export function Footer() {
         <div className="flex items-center gap-2.5">
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary">
             <svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden>
-              <path d="M2 12V2l10 10V2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M10.5 4.5C10.5 3.5 9.7 2.5 8.5 2.5H5.5C4.3 2.5 3.5 3.5 3.5 4.5C3.5 5.5 4.3 6 5.5 6.2H8.5C9.7 6.4 10.5 6.9 10.5 7.9C10.5 8.9 9.7 9.9 8.5 9.9H5.5C4.3 9.9 3.5 8.9 3.5 7.9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          <span className="text-sm font-semibold tracking-tight">Novara</span>
+          <span className="text-sm font-semibold tracking-tight">Solara Assets</span>
         </div>
 
         <p className="text-[13px] text-muted-foreground">
-          © {new Date().getFullYear()} Novara Digital Asset Management. All rights reserved.
+          © {new Date().getFullYear()} Solara Assets Digital Asset Management. All rights reserved.
         </p>
 
         <div className="flex items-center gap-6">

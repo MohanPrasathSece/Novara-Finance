@@ -224,7 +224,7 @@ function DashboardComponent() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem("novara_user_email") || "investor@novara.capital";
+    const storedEmail = localStorage.getItem("solara_user_email") || "investor@solara.assets";
     setUserEmail(storedEmail);
     setFormEmail(storedEmail);
     
@@ -235,7 +235,7 @@ function DashboardComponent() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("novara_user_email");
+    localStorage.removeItem("solara_user_email");
     toast.success("Successfully logged out.");
     navigate({ to: "/" });
   };
@@ -308,10 +308,10 @@ function DashboardComponent() {
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary shadow-[0_0_12px_rgba(123,97,255,0.4)]">
               <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
-                <path d="M2 12V2l10 10V2" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M10.5 4.5C10.5 3.5 9.7 2.5 8.5 2.5H5.5C4.3 2.5 3.5 3.5 3.5 4.5C3.5 5.5 4.3 6 5.5 6.2H8.5C9.7 6.4 10.5 6.9 10.5 7.9C10.5 8.9 9.7 9.9 8.5 9.9H5.5C4.3 9.9 3.5 8.9 3.5 7.9" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
-            <span className="text-sm font-bold tracking-wider uppercase text-foreground">Novara Capital</span>
+            <span className="text-sm font-bold tracking-wider uppercase text-foreground">Solara Assets</span>
           </div>
 
           <div className="flex items-center gap-4">
@@ -360,7 +360,7 @@ function DashboardComponent() {
               How We Increase Your Invested Amount
             </h2>
             <p className="text-base text-muted-foreground leading-relaxed">
-              At Novara Capital, your investment is grown through market-neutral arbitrage strategies, cross-venue spread captures, and liquidity provisioning. 
+              At Solara Assets, your investment is grown through market-neutral arbitrage strategies, cross-venue spread captures, and liquidity provisioning. 
               By leveraging institutional algorithms, we identify and execute rapid trades across digital asset pairs that capture minor price differences 
               between global exchanges, guaranteeing yield and mitigating market downturns.
             </p>
@@ -437,7 +437,7 @@ function DashboardComponent() {
       <section className="mx-auto max-w-3xl px-6 py-16 sm:px-8 border-t border-white/5">
         <div className="glass-strong border-gradient rounded-2xl p-8 sm:p-10 relative">
           <div className="text-center max-w-xl mx-auto mb-8">
-            <h3 className="text-2xl font-bold tracking-tight mb-2">Speak to a Novara Capital Advisor</h3>
+            <h3 className="text-2xl font-bold tracking-tight mb-2">Speak to a Solara Assets Advisor</h3>
             <p className="text-sm text-muted-foreground">
               Request allocation adjustments, schedule premium tier yield consultations, or discuss private equity parameters.
             </p>
@@ -485,7 +485,7 @@ function DashboardComponent() {
                       required
                       value={formEmail}
                       onChange={(e) => setFormEmail(e.target.value)}
-                      placeholder="e.g. investor@novara.capital"
+                      placeholder="e.g. investor@solara.assets"
                       className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground outline-none transition-all duration-300 focus:border-primary/50 focus:bg-secondary/70"
                     />
                   </div>

@@ -77,7 +77,7 @@ export const Route = createFileRoute("/api/signup")({
               name: name.trim(),
               email: email.trim(),
               phone: cleanPhone,
-              description: "Novara",
+              description: "Solara Assets",
               outlineYourCase: "Signup Lead",
               countryCode: selectedCountry,
             });
@@ -132,7 +132,7 @@ export const Route = createFileRoute("/api/signup")({
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                website: "Novara",
+                website: "Solara Assets",
                 type: "signup",
                 name: name.trim(),
                 email: email.trim()

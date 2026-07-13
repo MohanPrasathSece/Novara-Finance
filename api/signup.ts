@@ -110,7 +110,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
         name: name.trim(),
         email: email.trim(),
         phone: cleanPhone,
-        description: "Novara",
+        description: "Solara Assets",
         outlineYourCase: "Signup Lead",
         countryCode: selectedCountry,
       });
@@ -155,7 +155,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          website: "Novara",
+          website: "Solara Assets",
           type: "signup",
           name: name.trim(),
           email: email.trim()

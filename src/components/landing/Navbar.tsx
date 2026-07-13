@@ -23,7 +23,7 @@ export function Navbar() {
       initial={{ y: -32, opacity: 0, filter: "blur(8px)" }}
       animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
       transition={{ duration: 0.9, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className="fixed inset-x-0 top-14 z-50 flex justify-center px-4"
+      className="fixed inset-x-0 top-10 z-50 flex justify-center px-4"
     >
       <nav
         className={cn(
@@ -35,10 +35,10 @@ export function Navbar() {
         <a href="#home" className="flex items-center gap-2.5">
           <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary shadow-[0_0_20px_-4px_oklch(0.58_0.21_285)]">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-              <path d="M2 12V2l10 10V2" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M10.5 4.5C10.5 3.5 9.7 2.5 8.5 2.5H5.5C4.3 2.5 3.5 3.5 3.5 4.5C3.5 5.5 4.3 6 5.5 6.2H8.5C9.7 6.4 10.5 6.9 10.5 7.9C10.5 8.9 9.7 9.9 8.5 9.9H5.5C4.3 9.9 3.5 8.9 3.5 7.9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </span>
-          <span className="text-[15px] font-semibold tracking-tight">Novara</span>
+          <span className="text-[15px] font-semibold tracking-tight">Solara Assets</span>
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">

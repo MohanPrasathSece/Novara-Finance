@@ -95,7 +95,7 @@ export function WhySection() {
         <div>
           <Reveal>
             <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-primary-glow">
-              Why Novara
+              Why Solara
             </p>
             <h2 className="text-balance text-4xl font-bold leading-[1.08] tracking-[-0.025em] sm:text-5xl lg:text-[56px]">
               Why Modern Investors <span className="text-gradient-violet">Choose Us</span>

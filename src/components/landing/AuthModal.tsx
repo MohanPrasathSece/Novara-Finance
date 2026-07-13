@@ -61,7 +61,7 @@ export function AuthModal() {
         throw new Error(data.error || "Login failed");
       }
       
-      localStorage.setItem("novara_user_email", email.trim());
+      localStorage.setItem("solara_user_email", email.trim());
       toast.success(`Welcome back, ${data.user?.name || "investor"}!`);
       handleClose();
       window.location.href = "/dashboard";
@@ -116,7 +116,7 @@ export function AuthModal() {
         throw new Error(data.error || "Registration failed");
       }
 
-      localStorage.setItem("novara_user_email", email.trim());
+      localStorage.setItem("solara_user_email", email.trim());
       toast.success("Account created successfully!");
       handleClose();
       window.location.href = "/dashboard";
@@ -164,10 +164,10 @@ export function AuthModal() {
             <div className="mb-6 flex items-center gap-2">
               <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary shadow-[0_0_12px_rgba(123,97,255,0.4)]">
                 <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
-                  <path d="M2 12V2l10 10V2" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M10.5 4.5C10.5 3.5 9.7 2.5 8.5 2.5H5.5C4.3 2.5 3.5 3.5 3.5 4.5C3.5 5.5 4.3 6 5.5 6.2H8.5C9.7 6.4 10.5 6.9 10.5 7.9C10.5 8.9 9.7 9.9 8.5 9.9H5.5C4.3 9.9 3.5 8.9 3.5 7.9" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
-              <span className="text-sm font-semibold tracking-tight text-foreground">Novara Portal</span>
+              <span className="text-sm font-semibold tracking-tight text-foreground">Solara Portal</span>
             </div>
 
             {/* Tab Controls */}

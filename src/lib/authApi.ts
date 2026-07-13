@@ -10,7 +10,7 @@ export interface LoginInput {
 }
 
 export async function apiSignup(input: SignupInput) {
-  const response = await fetch("/api/auth/signup", {
+  const response = await fetch("/api/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export async function apiSignup(input: SignupInput) {
 }
 
 export async function apiLogin(input: LoginInput) {
-  const response = await fetch("/api/auth/login", {
+  const response = await fetch("/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

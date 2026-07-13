@@ -100,7 +100,7 @@ export function FomoNotification() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              Intake Phase IV: 97% Full
+              Intake Window: 97% Full
             </div>
 
             {/* Content copy */}
@@ -108,7 +108,7 @@ export function FomoNotification() {
               Only 4 Allocations Remain
             </h3>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-md mx-auto">
-              Institutional capacity is almost exhausted. The current private wealth intake cohort will close permanently in:
+              Institutional capacity is almost exhausted. The current private wealth intake window will close permanently in:
             </p>
 
             {/* Large Live Timer */}

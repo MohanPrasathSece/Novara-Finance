@@ -57,7 +57,7 @@ export function Hero() {
           transition={{ duration: 1.1, delay: 0.55, ease }}
           className="text-gradient-hero max-w-4xl text-balance text-5xl font-bold leading-[1.04] tracking-[-0.03em] sm:text-6xl lg:text-[84px]"
         >
-          Secure Your Allocation Before Cohort IV Closes.
+          Secure Your Allocation Before Intake Closes.
         </motion.h1>
 
         <motion.p
@@ -76,15 +76,14 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.95, ease }}
           className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
         >
-          <button
+          <MagneticButton
+            variant="primary"
             onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: { tab: "signup" } }))}
             className="cursor-pointer"
           >
-            <MagneticButton variant="primary">
-              Start Investing
-              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
-            </MagneticButton>
-          </button>
+            Start Investing
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" aria-hidden />
+          </MagneticButton>
           <a href="#solutions">
             <MagneticButton variant="ghost">Learn More</MagneticButton>
           </a>
@@ -105,9 +104,11 @@ export function Hero() {
 // Stateful Subcomponent for Hero Scarcity Metrics
 function HeroIntakeStatus() {
   const [timeLeft, setTimeLeft] = useState<string>("");
+  const [hasMounted, setHasMounted] = useState(false);
   const slotsLeft = 4; // Locked at 4 private allocations for authenticity
 
   useEffect(() => {
+    setHasMounted(true);
     // Sync with the same localStorage deadline
     const getDeadline = () => {
       const stored = localStorage.getItem("novara_intake_deadline_v2");
@@ -160,13 +161,13 @@ function HeroIntakeStatus() {
             <span className="relative flex h-1.5 w-1.5">
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary-glow"></span>
             </span>
-            <span className="text-[11px] font-semibold tracking-wider text-primary-glow uppercase">Cohort Intake Status</span>
+            <span className="text-[11px] font-semibold tracking-wider text-primary-glow uppercase">Intake Status</span>
           </div>
-          <h4 className="text-md font-bold text-foreground mt-1">Institutional Phase IV Allocation</h4>
+          <h4 className="text-md font-bold text-foreground mt-1">Institutional Allocation Intake</h4>
         </div>
         <div className="text-right">
           <span className="text-[11px] text-muted-foreground block">Closes In</span>
-          <span className="font-mono text-sm font-bold text-primary-glow">{timeLeft || "01h 00m 23s"}</span>
+          <span className="font-mono text-sm font-bold text-primary-glow">{hasMounted ? timeLeft : "01h 00m 23s"}</span>
         </div>
       </div>
 

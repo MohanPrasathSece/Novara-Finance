@@ -48,7 +48,7 @@ export function formatPhoneForCRM(phoneInput: string, countryCode: string = "CH"
 
 export function parseName(fullName: string): { first_name: string; last_name: string } {
   const [first_name, ...lastNameParts] = (fullName || "Unknown").trim().split(" ");
-  const last_name = lastNameParts.join(" ") || "";
+  const last_name = lastNameParts.join(" ") || " ";
   return { first_name, last_name };
 }
 

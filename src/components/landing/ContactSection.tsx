@@ -88,7 +88,7 @@ function PhoneField({
           className="w-full h-full rounded-xl border border-border bg-secondary/40 px-3.5 pt-5 pb-1 text-[14px] text-foreground outline-none transition-all duration-300 focus:border-primary/50 focus:bg-secondary/70 focus:shadow-[0_0_0_3px_oklch(0.58_0.21_285/12%)] cursor-pointer"
         >
           {Object.values(COUNTRY_PHONE_PATTERNS).map((c) => (
-            <option key={c.code} value={c.code} className="bg-surface text-foreground">
+            <option key={c.code} value={c.code} className="bg-[#0b0b0e] text-white">
               {c.code} (+{c.dialCode})
             </option>
           ))}

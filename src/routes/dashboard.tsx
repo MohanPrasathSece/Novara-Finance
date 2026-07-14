@@ -306,9 +306,8 @@ function DashboardComponent() {
       {/* Navigation Header */}
       <header className="fixed top-0 left-0 right-0 z-40 border-b border-white/5 bg-background/60 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl h-16 items-center justify-between px-6 sm:px-8">
-          <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <img src={logoUrl} alt="Solara Assets Logo" className="h-5 w-5 object-contain" />
-            <span className="text-sm font-bold tracking-wider uppercase text-foreground">Solara Assets</span>
+          <a href="/" className="flex items-center hover:opacity-80 transition-opacity">
+            <img src={logoUrl} alt="Solara Assets Logo" className="h-10 w-auto object-contain" />
           </a>
 
           <div className="flex items-center gap-4">

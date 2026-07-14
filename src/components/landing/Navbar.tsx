@@ -52,9 +52,8 @@ export function Navbar() {
         )}
         aria-label="Main navigation"
       >
-        <a href={getHref("#home")} className="flex items-center gap-2">
-          <img src={logoUrl} alt="Solara Assets Logo" className="h-6 w-6 object-contain" />
-          <span className="text-[15px] font-semibold tracking-tight">Solara Assets</span>
+        <a href={getHref("#home")} className="flex items-center">
+          <img src={logoUrl} alt="Solara Assets Logo" className="h-10 w-auto object-contain" />
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">

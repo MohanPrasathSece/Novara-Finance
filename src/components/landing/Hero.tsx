@@ -20,10 +20,9 @@ export function Hero() {
 
   return (
     <section id="home" ref={ref} className="relative overflow-hidden">
-      {/* Sphere backdrop — parallax slower than content */}
-      <motion.div
-        style={reduced ? undefined : { y: sphereY }}
-        className="pointer-events-none absolute inset-0 z-0"
+      {/* Sphere backdrop — fixed full screen background effect */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 h-screen w-screen"
         aria-hidden
       >
         <div className="absolute inset-0 h-full w-full">
@@ -34,7 +33,7 @@ export function Hero() {
         <div className="absolute left-1/2 top-0 h-[55vh] w-[1px] translate-x-[26vw] bg-gradient-to-b from-primary-glow/15 via-primary/4 to-transparent" />
         {/* Vignette */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,var(--background)_85%)]" />
-      </motion.div>
+      </div>
 
       <motion.div
         style={reduced ? undefined : { y: contentY, opacity: contentOpacity }}
@@ -47,7 +46,7 @@ export function Hero() {
           className="glass mb-8 flex items-center gap-2 rounded-full px-4 py-1.5 text-[13px] text-muted-foreground font-mono"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-primary-glow animate-pulse-glow" />
-          HIGH DEMAND INTAKE: ONLY 4 PRIVATE ALLOCATIONS REMAINING
+          INTAKE CLOSING SOON: ONLY 3 MEMBERSHIP SPOTS REMAINING
           <ChevronRight className="h-3.5 w-3.5 opacity-50" aria-hidden />
         </motion.div>
 
@@ -57,7 +56,7 @@ export function Hero() {
           transition={{ duration: 1.1, delay: 0.55, ease }}
           className="text-gradient-hero max-w-4xl text-balance text-5xl font-bold leading-[1.04] tracking-[-0.03em] sm:text-6xl lg:text-[84px]"
         >
-          Secure Your Allocation Before Intake Closes.
+          Secure Your VIP Access Before Intake Closes.
         </motion.h1>
 
         <motion.p
@@ -66,8 +65,7 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.75, ease }}
           className="mt-7 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground"
         >
-          Institutional capacity is filling rapidly. Reserve one of the final 4 private 
-          allocations to lock in your quantitative portfolio strategy today.
+          Institutional capacity is 98% filled. The current registration window is closing soon. Submit your enquiry to secure one of the final 3 priority membership spots and lock in current portfolio yield strategies.
         </motion.p>
 
         <motion.div
@@ -105,7 +103,7 @@ export function Hero() {
 function HeroIntakeStatus() {
   const [timeLeft, setTimeLeft] = useState<string>("");
   const [hasMounted, setHasMounted] = useState(false);
-  const slotsLeft = 4; // Locked at 4 private allocations for authenticity
+  const slotsLeft = 3; // Locked at 3 private spots for authenticity
 
   useEffect(() => {
     setHasMounted(true);
@@ -159,11 +157,12 @@ function HeroIntakeStatus() {
         <div>
           <div className="flex items-center gap-2">
             <span className="relative flex h-1.5 w-1.5">
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary-glow animate-ping"></span>
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary-glow"></span>
             </span>
             <span className="text-[11px] font-semibold tracking-wider text-primary-glow uppercase">Intake Status</span>
           </div>
-          <h4 className="text-md font-bold text-foreground mt-1">Institutional Allocation Intake</h4>
+          <h4 className="text-md font-bold text-foreground mt-1">Institutional VIP Access Intake</h4>
         </div>
         <div className="text-right">
           <span className="text-[11px] text-muted-foreground block">Closes In</span>
@@ -173,12 +172,12 @@ function HeroIntakeStatus() {
 
       <div className="mt-4">
         <div className="flex justify-between text-xs text-muted-foreground mb-1 font-mono">
-          <span>Allocation capacity: <strong>{filledSlots} / {totalSlots} units</strong></span>
-          <span className="text-primary-glow font-semibold">Only {slotsLeft} remaining</span>
+          <span>Capacity Status: <strong>{filledSlots} / {totalSlots} units</strong></span>
+          <span className="text-[#F43F5E] font-semibold animate-pulse">Only {slotsLeft} spots left</span>
         </div>
         <div className="w-full bg-secondary/50 rounded-full h-1.5 overflow-hidden border border-border">
           <motion.div 
-            className="bg-gradient-to-r from-primary to-primary-glow h-full rounded-full" 
+            className="bg-gradient-to-r from-rose-500 via-primary to-primary-glow h-full rounded-full animate-pulse-glow" 
             initial={{ width: 0 }}
             animate={{ width: `${fillPercentage}%` }}
             transition={{ duration: 1.5, ease: "easeOut" }}

@@ -31,7 +31,7 @@ export function HeroSphere() {
     };
     resize();
 
-    const N = 420;
+    const N = 700;
     const points: { x: number; y: number; z: number; r: number; tw: number }[] = [];
     // Fibonacci sphere distribution
     for (let i = 0; i < N; i++) {
@@ -48,7 +48,7 @@ export function HeroSphere() {
     }
 
     // Floating ambient particles
-    const M = 46;
+    const M = 180;
     const dust = Array.from({ length: M }, () => ({
       x: Math.random(),
       y: Math.random(),

@@ -140,8 +140,8 @@ function LiveTradingChart() {
   );
 }
 
-// Simulated active vaults dashboard allocation visualizer
-function VaultAllocationVisual() {
+// Simulated active vaults dashboard portfolio distribution visualizer
+function VaultDistributionVisual() {
   const [growth, setGrowth] = useState(450290);
 
   useEffect(() => {
@@ -305,14 +305,14 @@ function DashboardComponent() {
       {/* Navigation Header */}
       <header className="fixed top-0 left-0 right-0 z-40 border-b border-white/5 bg-background/60 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl h-16 items-center justify-between px-6 sm:px-8">
-          <div className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary shadow-[0_0_12px_rgba(123,97,255,0.4)]">
               <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
                 <path d="M10.5 4.5C10.5 3.5 9.7 2.5 8.5 2.5H5.5C4.3 2.5 3.5 3.5 3.5 4.5C3.5 5.5 4.3 6 5.5 6.2H8.5C9.7 6.4 10.5 6.9 10.5 7.9C10.5 8.9 9.7 9.9 8.5 9.9H5.5C4.3 9.9 3.5 8.9 3.5 7.9" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </span>
             <span className="text-sm font-bold tracking-wider uppercase text-foreground">Solara Assets</span>
-          </div>
+          </a>
 
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-2 rounded-full border border-white/5 bg-secondary/30 px-3 py-1 text-xs text-muted-foreground">
@@ -391,11 +391,11 @@ function DashboardComponent() {
         </div>
       </section>
 
-      {/* Section 2: Vault Allocations & Institutional Security */}
+      {/* Section 2: Vault Holdings & Institutional Security */}
       <section className="mx-auto max-w-7xl px-6 py-12 sm:px-8 border-t border-white/5">
         <div className="grid gap-12 lg:grid-cols-12 items-center">
           <div className="lg:col-span-5 h-[340px] order-2 lg:order-1">
-            <VaultAllocationVisual />
+            <VaultDistributionVisual />
           </div>
           <div className="lg:col-span-7 space-y-6 order-1 lg:order-2 lg:pl-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-xs font-semibold text-primary-glow">
@@ -407,7 +407,7 @@ function DashboardComponent() {
             </h2>
             <p className="text-base text-muted-foreground leading-relaxed">
               We separate and lock assets into dedicated Multi-Party Computation (MPC) custody vaults. Co-custodied with Fidelity Digital Assets, 
-              your allocations are secured by multi-layered institutional governance, cold storage reserves, and comprehensive insurance backing.
+              your custody balances are secured by multi-layered institutional governance, cold storage reserves, and comprehensive insurance backing.
             </p>
             <div className="grid gap-6 sm:grid-cols-2 pt-2">
               <div className="space-y-2">
@@ -439,7 +439,7 @@ function DashboardComponent() {
           <div className="text-center max-w-xl mx-auto mb-8">
             <h3 className="text-2xl font-bold tracking-tight mb-2">Speak to a Solara Assets Advisor</h3>
             <p className="text-sm text-muted-foreground">
-              Request allocation adjustments, schedule premium tier yield consultations, or discuss private equity parameters.
+              Request portfolio weight adjustments, schedule premium tier yield consultations, or discuss private equity parameters.
             </p>
           </div>
 
@@ -530,7 +530,7 @@ function DashboardComponent() {
                     value={formMessage}
                     onChange={(e) => setFormMessage(e.target.value)}
                     rows={4}
-                    placeholder="Describe any allocation targets, risk preferences, or custom timing..."
+                    placeholder="Describe any portfolio targets, risk preferences, or custom timing..."
                     className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground outline-none transition-all duration-300 focus:border-primary/50 focus:bg-secondary/70 resize-none"
                   />
                 </div>

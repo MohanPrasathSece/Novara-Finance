@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { Reveal } from "./Reveal";
@@ -124,6 +124,25 @@ function PhoneField({
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
   const [countryCode, setCountryCode] = useState("CH");
+  const [timeLeft, setTimeLeft] = useState(900); // 15 minutes = 900 seconds
+  const [timerExpired, setTimerExpired] = useState(false);
+
+  useEffect(() => {
+    if (submitted || timeLeft <= 0) {
+      if (timeLeft <= 0) setTimerExpired(true);
+      return;
+    }
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft, submitted]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  };
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -238,18 +257,22 @@ export function ContactSection() {
                   className="space-y-5"
                 >
                   {/* Urgency Notice & Live Ticker */}
-                  <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 mb-4">
-                    <div className="flex items-center justify-between gap-2 text-xs font-semibold text-primary-glow">
-                      <span className="flex items-center gap-1.5">
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary-glow animate-pulse-glow" />
-                        Allocation Lock-In Active
+                  <div className="rounded-xl border border-rose-500/20 bg-rose-500/5 p-4 mb-4">
+                    <div className="flex items-center justify-between gap-2 text-xs font-semibold text-rose-400 font-mono">
+                      <span className="flex items-center gap-1.5 animate-pulse">
+                        <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-ping" />
+                        STATUS: PRIORITY POSITION RESERVED
                       </span>
-                      <span className="font-mono text-[10px] bg-secondary px-2 py-0.5 rounded text-muted-foreground uppercase">
-                        First-Come Priority
+                      <span className="font-mono text-[10px] bg-rose-950/60 px-2 py-0.5 rounded text-rose-300 border border-rose-800/30 uppercase animate-pulse">
+                        RESERVATION EXPIRES: {formatTime(timeLeft)}
                       </span>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-                      Complete your enquiry to instantly reserve your institutional intake position. Submissions lock in current yield tiers for 24 hours.
+                      {timerExpired ? (
+                        <span className="text-[#F43F5E] font-medium">Your priority reservation window has expired. Slots have released to the waitlist queue. Please complete this enquiry now to check fallback availability.</span>
+                      ) : (
+                        <span>Complete the enquiry form below to lock in one of the final 3 priority access spots before registration concludes. Your current reservation is held for exactly <strong className="text-rose-400 font-semibold">{formatTime(timeLeft)}</strong> before release.</span>
+                      )}
                     </p>
                     <RecentActivityTicker />
                   </div>
@@ -276,7 +299,7 @@ export function ContactSection() {
   );
 }
 
-import { useEffect } from "react";
+// Recent activity component
 
 function RecentActivityTicker() {
   const [index, setIndex] = useState(0);

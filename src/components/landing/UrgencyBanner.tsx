@@ -3,7 +3,7 @@ import { ArrowRight, Clock } from "lucide-react";
 
 export function UrgencyBanner() {
   const [timeLeft, setTimeLeft] = useState<string>("");
-  const slotsLeft = 4; // Locked at 4 private allocations for authenticity
+  const slotsLeft = 3; // Locked at 3 private spots for authenticity
 
   useEffect(() => {
     // 1 hour 23 seconds countdown stored in localStorage
@@ -57,22 +57,25 @@ export function UrgencyBanner() {
   }, []);
 
   return (
-    <div className="fixed inset-x-0 top-0 z-50 h-10 w-full bg-background/80 border-b border-white/[0.04] backdrop-blur-md px-4 sm:px-6 flex items-center justify-between text-xs font-mono tracking-wider text-[#A3A3A3]">
-      <div className="flex items-center gap-2 text-[#E5E5E5] font-semibold">
-        <span className="h-1.5 w-1.5 rounded-full bg-primary-glow shadow-[0_0_10px_oklch(0.72_0.15_293)]" />
-        <span className="hidden sm:inline text-muted-foreground">INSTITUTIONAL INTAKE ACTIVE:</span>
-        <span>ONLY {slotsLeft} PRIVATE ALLOCATIONS REMAINING</span>
+    <div className="fixed inset-x-0 top-0 z-50 h-10 w-full bg-background/80 border-b border-white/[0.04] backdrop-blur-md px-3 sm:px-6 flex items-center justify-between text-[11px] sm:text-xs font-mono tracking-wider text-[#A3A3A3]">
+      <div className="flex items-center gap-1.5 text-[#E5E5E5] font-semibold">
+        <span className="h-1.5 w-1.5 rounded-full bg-primary-glow shadow-[0_0_10px_oklch(0.72_0.15_293)] animate-pulse" />
+        <span className="hidden sm:inline text-muted-foreground">INTAKE STAGE CLOSING:</span>
+        <span className="text-[#F43F5E] animate-pulse">ONLY {slotsLeft} SPOTS LEFT</span>
+        <span className="h-1 w-1 rounded-full bg-neutral-600 hidden md:inline" />
+        <span className="hidden md:inline text-emerald-400 font-medium animate-pulse">● HIGH DEMAND: 78 INVESTORS ACTIVE</span>
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-1.5 text-xs text-[#E5E5E5]">
-          <Clock className="h-3.5 w-3.5 text-primary-glow" />
-          <span>Intake Window Closes: {timeLeft || "01:00:23"}</span>
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 text-[#E5E5E5]">
+          <Clock className="h-3.5 w-3.5 text-primary-glow animate-pulse" />
+          <span className="hidden xs:inline">Closes In: </span>
+          <span>{timeLeft || "01:00:23"}</span>
         </div>
 
         <button
           onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: { tab: "signup" } }))}
-          className="group flex items-center gap-1 border border-white/10 hover:border-primary-glow bg-white/[0.02] hover:bg-primary/10 text-foreground px-3 py-1 rounded-full text-[11px] font-medium transition-all duration-300 cursor-pointer"
+          className="group hidden sm:flex items-center gap-1 border border-white/10 hover:border-primary-glow bg-white/[0.02] hover:bg-primary/10 text-foreground px-3 py-1 rounded-full text-[11px] font-medium transition-all duration-300 cursor-pointer"
         >
           Secure Your Slot
           <ArrowRight className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" />

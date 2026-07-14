@@ -7,7 +7,7 @@ const features = [
   {
     icon: BrainCircuit,
     title: "AI Portfolio Management",
-    body: "Quantitative models rebalance allocations continuously, optimizing for risk-adjusted returns across market cycles.",
+    body: "Quantitative models rebalance portfolio holdings continuously, optimizing for risk-adjusted returns across market cycles.",
   },
   {
     icon: LockKeyhole,
@@ -17,7 +17,7 @@ const features = [
   {
     icon: Activity,
     title: "Real-Time Performance",
-    body: "Full transparency into every position, fee, and rebalance — streamed to your dashboard in real time.",
+    body: "Full transparency into every position, fee, and rebalance - streamed to your dashboard in real time.",
   },
 ];
 
@@ -102,7 +102,7 @@ export function WhySection() {
             </h2>
             <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">
               We combine disciplined portfolio construction with the
-              infrastructure standards of traditional finance — built for
+              infrastructure standards of traditional finance - built for
               investors who think in decades, not days.
             </p>
           </Reveal>

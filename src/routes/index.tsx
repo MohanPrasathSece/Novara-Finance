@@ -22,7 +22,7 @@ function Index() {
         <AuthModal />
         <FomoNotification />
         <main>
-          <h1 className="sr-only">Solara Assets — Institutional Digital Asset Management</h1>
+          <h1 className="sr-only">Solara Assets - Institutional Digital Asset Management</h1>
           <Hero />
           <WhySection />
           <ContactSection />

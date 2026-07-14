@@ -53,8 +53,11 @@ export function FomoNotification() {
   };
 
   const handleTriggerSignup = () => {
-    window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: { tab: "signup" } }));
     setIsVisible(false);
+    const element = document.getElementById("contact-form");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -100,15 +103,15 @@ export function FomoNotification() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              Intake Window: 97% Full
+              PRIORITY INTAKE STATUS: 98% REGISTERED CAPACITY
             </div>
 
             {/* Content copy */}
             <h3 className="text-2xl font-bold leading-tight tracking-tight text-foreground sm:text-3xl">
-              Only 4 Allocations Remain
+              FINAL STAGE: ONLY 3 MEMBERSHIP SPOTS LEFT
             </h3>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground max-w-md mx-auto">
-              Institutional capacity is almost exhausted. The current private wealth intake window will close permanently in:
+              Institutional capacity limits are closing soon to ensure optimized portfolio distributions. Submit your details immediately to claim a priority spot before this intake cohort concludes:
             </p>
 
             {/* Large Live Timer */}
@@ -130,7 +133,7 @@ export function FomoNotification() {
                 onClick={handleTriggerSignup}
                 className="group w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_0_24px_rgba(123,97,255,0.3)] transition-all duration-300 hover:brightness-110 hover:shadow-[0_0_36px_rgba(123,97,255,0.45)] cursor-pointer"
               >
-                Secure Allocation Now
+                Secure VIP Pass Now
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </button>
             </div>

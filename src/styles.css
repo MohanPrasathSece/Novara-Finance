@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * SOLARA ASSETS — Institutional digital asset platform design system.
+ * SOLARA ASSETS - Institutional digital asset platform design system.
  * Ultra-dark, single violet accent. Luxury via lighting, not color.
  */
 
@@ -55,7 +55,7 @@
   --popover: oklch(0.17 0.007 285);
   --popover-foreground: oklch(0.96 0.003 285);
 
-  /* Single accent — deep violet #7B61FF, glow #A88BFF */
+  /* Single accent - deep violet #7B61FF, glow #A88BFF */
   --primary: oklch(0.58 0.21 285);
   --primary-glow: oklch(0.72 0.15 293);
   --primary-foreground: oklch(0.98 0.005 285);

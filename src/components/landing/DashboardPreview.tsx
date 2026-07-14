@@ -6,7 +6,7 @@ import { CountUp } from "./CountUp";
 const performancePath =
   "M0,150 C40,142 70,120 110,118 C150,116 180,128 220,110 C260,92 290,96 330,78 C370,60 400,66 440,48 C480,30 520,38 560,24 C600,10 640,18 680,8";
 
-const allocations = [
+const portfolioWeights = [
   { label: "Bitcoin", pct: 38 },
   { label: "Ethereum", pct: 27 },
   { label: "Stablecoin Yield", pct: 18 },
@@ -134,9 +134,9 @@ export function DashboardPreview() {
 
             {/* Allocation */}
             <div className="glass rounded-2xl p-5">
-              <p className="mb-4 text-sm font-medium">Allocation</p>
+              <p className="mb-4 text-sm font-medium">Asset Weighting</p>
               <div className="space-y-3.5">
-                {allocations.map((a, i) => (
+                {portfolioWeights.map((a, i) => (
                   <div key={a.label}>
                     <div className="mb-1.5 flex justify-between text-[13px]">
                       <span className="text-muted-foreground">{a.label}</span>

@@ -77,7 +77,7 @@ export function PlatformSection() {
             Portfolio Intelligence, Engineered for Clarity
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            Every position, every rebalance, every insight — presented with
+            Every position, every rebalance, every insight - presented with
             the precision of an institutional terminal.
           </p>
         </Reveal>
@@ -155,9 +155,9 @@ export function PlatformSection() {
                   <p className="mb-4 text-sm font-medium">AI Insights</p>
                   <div className="space-y-3">
                     {[
-                      "Momentum shift detected in L2 sector — allocation adjusted +2%.",
+                      "Momentum shift detected in L2 sector - exposure adjusted +2%.",
                       "Staking yield above 90-day average. Compounding enabled.",
-                      "Correlation to equities at 6-month low — hedge reduced.",
+                      "Correlation to equities at 6-month low - hedge reduced.",
                     ].map((text, i) => (
                       <motion.div
                         key={i}

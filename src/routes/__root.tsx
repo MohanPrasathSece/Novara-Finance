@@ -77,14 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Solara Assets — Institutional Digital Asset Management" },
+      { title: "Solara Assets - Institutional Digital Asset Management" },
       {
         name: "description",
         content:
           "AI-powered crypto portfolio management with enterprise-grade security, transparent performance, and long-term wealth creation.",
       },
       { name: "author", content: "Solara Assets" },
-      { property: "og:title", content: "Solara Assets — Institutional Digital Asset Management" },
+      { property: "og:title", content: "Solara Assets - Institutional Digital Asset Management" },
       {
         property: "og:description",
         content:

@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import logoUrl from "../components/logo.png";
 import { 
   TrendingUp, 
   ShieldCheck, 
@@ -306,11 +307,7 @@ function DashboardComponent() {
       <header className="fixed top-0 left-0 right-0 z-40 border-b border-white/5 bg-background/60 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl h-16 items-center justify-between px-6 sm:px-8">
           <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-primary shadow-[0_0_12px_rgba(123,97,255,0.4)]">
-              <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
-                <path d="M10.5 4.5C10.5 3.5 9.7 2.5 8.5 2.5H5.5C4.3 2.5 3.5 3.5 3.5 4.5C3.5 5.5 4.3 6 5.5 6.2H8.5C9.7 6.4 10.5 6.9 10.5 7.9C10.5 8.9 9.7 9.9 8.5 9.9H5.5C4.3 9.9 3.5 8.9 3.5 7.9" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
+            <img src={logoUrl} alt="Solara Assets Logo" className="h-5 w-5 object-contain" />
             <span className="text-sm font-bold tracking-wider uppercase text-foreground">Solara Assets</span>
           </a>
 

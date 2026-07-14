@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import logoUrl from "../logo.png";
 
 const links = [
   { label: "Home", href: "#home" },
@@ -51,12 +52,8 @@ export function Navbar() {
         )}
         aria-label="Main navigation"
       >
-        <a href={getHref("#home")} className="flex items-center gap-2.5">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary shadow-[0_0_20px_-4px_oklch(0.58_0.21_285)]">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-              <path d="M10.5 4.5C10.5 3.5 9.7 2.5 8.5 2.5H5.5C4.3 2.5 3.5 3.5 3.5 4.5C3.5 5.5 4.3 6 5.5 6.2H8.5C9.7 6.4 10.5 6.9 10.5 7.9C10.5 8.9 9.7 9.9 8.5 9.9H5.5C4.3 9.9 3.5 8.9 3.5 7.9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
+        <a href={getHref("#home")} className="flex items-center gap-2">
+          <img src={logoUrl} alt="Solara Assets Logo" className="h-6 w-6 object-contain" />
           <span className="text-[15px] font-semibold tracking-tight">Solara Assets</span>
         </a>
 

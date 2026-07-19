@@ -26,5 +26,7 @@ export const COUNTRY_PHONE_PATTERNS: Record<string, CountryPattern> = {
   BR: { name: "Brazil", code: "BR", dialCode: "55", regex: /^(0055|\+55)?(0)?[1-9]\d{9,10}$/, placeholder: "11 98765-4321" },
   MX: { name: "Mexico", code: "MX", dialCode: "52", regex: /^(0052|\+52)?[1-9]\d{9}$/, placeholder: "55 1234 5678" },
   JP: { name: "Japan", code: "JP", dialCode: "81", regex: /^(0081|\+81)?(0)?[789]0\d{8}$/, placeholder: "90 1234 5678" },
-  CY: { name: "Cyprus", code: "CY", dialCode: "357", regex: /^(00357|\+357)?[9]\d{7}$/, placeholder: "99 123456" }
+  CY: { name: "Cyprus", code: "CY", dialCode: "357", regex: /^(00357|\+357)?[9]\d{7}$/, placeholder: "99 123456" },
+   code: "IE", name: "Ireland", dialCode: "353", placeholder: "87 123 4567", regex: /^(00353|\+353)?(0)?[89]\d{7,8}$/ },
+  GBR: { code: "GBR", name: "Great Britain", dialCode: "44", placeholder: "7700 900077", regex: /^(0044|\+44)?(0)?7\d{9}$/ },
 };

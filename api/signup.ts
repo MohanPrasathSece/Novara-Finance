@@ -3,6 +3,7 @@ import { submitToCRM } from "./_lib/crm.js";
 import { getUsers, saveUsers, User } from "./_lib/blobDb.js";
 
 const DIAL_CODES: Record<string, string> = {
+  IE: "353",
   CH: "41",
   FR: "33",
   BE: "32",

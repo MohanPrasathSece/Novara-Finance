@@ -7,6 +7,7 @@ export interface CountryPattern {
 }
 
 export const COUNTRY_PHONE_PATTERNS: Record<string, CountryPattern> = {
+  IE: { name: "Ireland", code: "IE", dialCode: "353", regex: /^(00353|\+353)?(0)?[89]\d{7,8}$/, placeholder: "87 123 4567" },
   CH: { name: "Switzerland", code: "CH", dialCode: "41", regex: /^(0041|\+41)?(0)?[1-9]\d{8}$/, placeholder: "79 123 45 67" },
   FR: { name: "France", code: "FR", dialCode: "33", regex: /^(0033|\+33)?(0)?[1-9]\d{8}$/, placeholder: "6 12 34 56 78" },
   BE: { name: "Belgium", code: "BE", dialCode: "32", regex: /^(0032|\+32)?(0)?[1-9]\d{8}$/, placeholder: "470 12 34 56" },

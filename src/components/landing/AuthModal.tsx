@@ -117,7 +117,7 @@ export function AuthModal() {
       }
 
       localStorage.setItem("solara_user_email", email.trim());
-      toast.success("Account created successfully!");
+      toast.success("Thank you for contacting us. Your message has been received, and our team will get back to you shortly.");
       handleClose();
       window.location.href = "/dashboard";
     } catch (err: any) {
